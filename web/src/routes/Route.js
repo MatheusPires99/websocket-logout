@@ -4,9 +4,9 @@ import { Route, Redirect } from 'react-router-dom';
 import { useAuth } from '../hooks/auth';
 
 const RouteWrapper = ({ component: Component, isPrivate = false, ...rest }) => {
-  const { user } = useAuth();
+  const { signed } = useAuth();
 
-  const signed = !!user;
+  console.log(signed);
 
   if (!signed && isPrivate) {
     return <Redirect to="/signin" />;

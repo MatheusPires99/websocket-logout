@@ -5,17 +5,16 @@ import api from '../services/api';
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
-  const [data, setData] = useState(() => {
+  const [accessToken, setAccessToken] = useState(() => {
     const token = localStorage.getItem('@Websocket-logout:token');
-    const user = localStorage.getItem('@Websocket-logout:user');
 
-    if (token && user) {
+    if (token) {
       api.defaults.headers.authorization = `Bearer ${token}`;
 
-      return { token, user: JSON.parse(user) };
+      return token;
     }
 
-    return {};
+    return '';
   });
 
   const signIn = useCallback(async ({ email, password }) => {
@@ -24,28 +23,25 @@ export const AuthProvider = ({ children }) => {
       password,
     });
 
-    const { user, token } = response.data;
+    const { token } = response.data;
 
     localStorage.setItem('@Websocket-logout:token', token);
-    localStorage.setItem('@Websocket-logout:user', JSON.stringify(user));
 
     api.defaults.headers.authorization = `Bearer ${token}`;
 
-    setData({
-      user,
+    setAccessToken({
       token,
     });
   }, []);
 
   const signOut = useCallback(() => {
     localStorage.removeItem('@Websocket-logout:token');
-    localStorage.removeItem('@Websocket-logout:user');
 
-    setData({});
+    setAccessToken('');
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user: data.user, signIn, signOut }}>
+    <AuthContext.Provider value={{ signed: !!accessToken, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );
