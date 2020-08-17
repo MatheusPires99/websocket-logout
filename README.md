@@ -12,7 +12,7 @@
 ## :page_with_curl: Sobre
 Nessa aplicação tive o objetivo de identificar o login de um mesmo usuário em uma outra aba do navegador usando Adonis e Websocket.
 
-Quando um usuário faz login no sistema ele se inscreve em um canal passando o seu id. Quando esse mesmo usuário ao logar, em uma outra aba do navegador, o sistema busca esse canal e envia uma mensagem do backend para o frontend avisando que houve uma inscrição de um mesmo usuário no canal.
+Quando um usuário faz login no sistema ele se inscreve em um canal passando o seu id. Quando esse mesmo usuário acessa em uma outra aba do navegador o sistema busca esse canal e envia uma mensagem do backend para o frontend avisando que houve uma inscrição de um mesmo usuário no canal.
 
 ## :hammer: Tecnologias
 Esse projeto foi desenvolvido com as seguintes tecnologias:
