@@ -1,4 +1,10 @@
-import React, { createContext, useCallback, useState, useContext } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useState,
+  useContext,
+  useEffect,
+} from 'react';
 
 import api from '../services/api';
 
@@ -16,6 +22,17 @@ export const AuthProvider = ({ children }) => {
 
     return '';
   });
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    async function getAuthenticadUser() {
+      const response = await api.get('/account');
+
+      setUser(response.data);
+    }
+
+    getAuthenticadUser();
+  }, []);
 
   const signIn = useCallback(async ({ email, password }) => {
     const response = await api.post('sessions', {
@@ -38,10 +55,13 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('@Websocket-logout:token');
 
     setAccessToken('');
+    setUser({});
   }, []);
 
   return (
-    <AuthContext.Provider value={{ signed: !!accessToken, signIn, signOut }}>
+    <AuthContext.Provider
+      value={{ user, signed: !!accessToken, signIn, signOut }}
+    >
       {children}
     </AuthContext.Provider>
   );
